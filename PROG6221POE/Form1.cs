@@ -1,13 +1,34 @@
-using PROG6221POE;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace PROG6221POE
 {
+    /*
+     * ==========================================================
+     * FORM1
+     * ----------------------------------------------------------
+     * Main graphical user interface for CYBER BOT.
+     * Handles:
+     * - User interaction
+     * - Chat display
+     * - Button events
+     * - Input processing
+     * - Startup sequence
+     * ==========================================================
+     */
+
     public partial class Form1 : Form
     {
+        // ======================================================
+        // CHATBOT ENGINE
+        // ======================================================
+
         private ChatbotEngine? bot;
+
+        // ======================================================
+        // UI COMPONENTS
+        // ======================================================
 
         private Label? lblTitle;
         private Label? lblSubtitle;
@@ -21,6 +42,10 @@ namespace PROG6221POE
 
         private RichTextBox? rtbChat;
 
+        // ======================================================
+        // CONSTRUCTOR
+        // ======================================================
+
         public Form1()
         {
             InitializeComponent();
@@ -28,26 +53,37 @@ namespace PROG6221POE
             BuildInterface();
         }
 
+        // ======================================================
+        // UI CREATION
+        // ======================================================
+
         private void BuildInterface()
         {
+            // --------------------------------------------------
+            // FORM SETTINGS
+            // --------------------------------------------------
+
             Text = "CYBER BOT";
 
-            Size = new Size(960, 720);
+            Size = new Size(980, 740);
 
             StartPosition = FormStartPosition.CenterScreen;
 
-            BackColor = Color.FromArgb(28, 10, 10);
+            BackColor = Color.FromArgb(20, 8, 8);
 
             FormBorderStyle = FormBorderStyle.FixedSingle;
 
             MaximizeBox = false;
 
-            // Main title
+            // --------------------------------------------------
+            // TITLE
+            // --------------------------------------------------
+
             lblTitle = new Label();
 
             lblTitle.Text = "CYBER BOT";
 
-            lblTitle.ForeColor = Color.FromArgb(255, 90, 90);
+            lblTitle.ForeColor = Color.FromArgb(255, 80, 80);
 
             lblTitle.Font = new Font("Consolas", 30, FontStyle.Bold);
 
@@ -57,42 +93,53 @@ namespace PROG6221POE
 
             Controls.Add(lblTitle);
 
-            // Subtitle under title
+            // --------------------------------------------------
+            // SUBTITLE
+            // --------------------------------------------------
+
             lblSubtitle = new Label();
 
-            lblSubtitle.Text = "Interactive Cybersecurity Assistant";
+            lblSubtitle.Text =
+                "Interactive Cybersecurity Awareness Assistant";
 
             lblSubtitle.ForeColor = Color.FromArgb(255, 180, 180);
 
             lblSubtitle.Font = new Font("Consolas", 10);
 
-            lblSubtitle.Location = new Point(40, 75);
+            lblSubtitle.Location = new Point(40, 78);
 
             lblSubtitle.AutoSize = true;
 
             Controls.Add(lblSubtitle);
 
-            // Name label
+            // --------------------------------------------------
+            // USER LABEL
+            // --------------------------------------------------
+
             lblName = new Label();
 
             lblName.Text = "USER";
 
-            lblName.ForeColor = Color.FromArgb(255, 200, 200);
+            lblName.ForeColor = Color.FromArgb(255, 210, 210);
 
-            lblName.Font = new Font("Consolas", 10, FontStyle.Bold);
+            lblName.Font =
+                new Font("Consolas", 10, FontStyle.Bold);
 
-            lblName.Location = new Point(40, 120);
+            lblName.Location = new Point(40, 125);
 
             lblName.AutoSize = true;
 
             Controls.Add(lblName);
 
-            // Name input field
+            // --------------------------------------------------
+            // USERNAME TEXTBOX
+            // --------------------------------------------------
+
             txtName = new TextBox();
 
-            txtName.Location = new Point(105, 115);
+            txtName.Location = new Point(105, 120);
 
-            txtName.Size = new Size(300, 35);
+            txtName.Size = new Size(320, 35);
 
             txtName.Font = new Font("Consolas", 11);
 
@@ -126,14 +173,17 @@ namespace PROG6221POE
 
             Controls.Add(txtName);
 
-            // Start button
+            // --------------------------------------------------
+            // START BUTTON
+            // --------------------------------------------------
+
             btnStart = new Button();
 
             btnStart.Text = "START";
 
-            btnStart.Location = new Point(425, 112);
+            btnStart.Location = new Point(445, 118);
 
-            btnStart.Size = new Size(145, 42);
+            btnStart.Size = new Size(150, 42);
 
             btnStart.BackColor = Color.FromArgb(170, 45, 45);
 
@@ -141,11 +191,13 @@ namespace PROG6221POE
 
             btnStart.FlatStyle = FlatStyle.Flat;
 
-            btnStart.FlatAppearance.BorderColor = Color.FromArgb(255, 180, 180);
+            btnStart.FlatAppearance.BorderColor =
+                Color.FromArgb(255, 180, 180);
 
             btnStart.FlatAppearance.BorderSize = 1;
 
-            btnStart.Font = new Font("Consolas", 10, FontStyle.Bold);
+            btnStart.Font =
+                new Font("Consolas", 10, FontStyle.Bold);
 
             btnStart.Cursor = Cursors.Hand;
 
@@ -153,16 +205,19 @@ namespace PROG6221POE
 
             Controls.Add(btnStart);
 
-            // Chat area
+            // --------------------------------------------------
+            // CHAT AREA
+            // --------------------------------------------------
+
             rtbChat = new RichTextBox();
 
-            rtbChat.Location = new Point(40, 185);
+            rtbChat.Location = new Point(40, 190);
 
-            rtbChat.Size = new Size(870, 395);
+            rtbChat.Size = new Size(885, 410);
 
             rtbChat.ReadOnly = true;
 
-            rtbChat.BackColor = Color.FromArgb(15, 5, 5);
+            rtbChat.BackColor = Color.FromArgb(10, 3, 3);
 
             rtbChat.ForeColor = Color.FromArgb(255, 210, 210);
 
@@ -172,12 +227,15 @@ namespace PROG6221POE
 
             Controls.Add(rtbChat);
 
-            // User message input
+            // --------------------------------------------------
+            // INPUT FIELD
+            // --------------------------------------------------
+
             txtInput = new TextBox();
 
-            txtInput.Location = new Point(40, 610);
+            txtInput.Location = new Point(40, 625);
 
-            txtInput.Size = new Size(710, 40);
+            txtInput.Size = new Size(720, 40);
 
             txtInput.Font = new Font("Consolas", 11);
 
@@ -193,14 +251,17 @@ namespace PROG6221POE
 
             Controls.Add(txtInput);
 
-            // Send button
+            // --------------------------------------------------
+            // SEND BUTTON
+            // --------------------------------------------------
+
             btnSend = new Button();
 
             btnSend.Text = "SEND";
 
-            btnSend.Location = new Point(770, 606);
+            btnSend.Location = new Point(780, 621);
 
-            btnSend.Size = new Size(140, 42);
+            btnSend.Size = new Size(145, 42);
 
             btnSend.BackColor = Color.FromArgb(170, 45, 45);
 
@@ -208,11 +269,13 @@ namespace PROG6221POE
 
             btnSend.FlatStyle = FlatStyle.Flat;
 
-            btnSend.FlatAppearance.BorderColor = Color.FromArgb(255, 180, 180);
+            btnSend.FlatAppearance.BorderColor =
+                Color.FromArgb(255, 180, 180);
 
             btnSend.FlatAppearance.BorderSize = 1;
 
-            btnSend.Font = new Font("Consolas", 10, FontStyle.Bold);
+            btnSend.Font =
+                new Font("Consolas", 10, FontStyle.Bold);
 
             btnSend.Cursor = Cursors.Hand;
 
@@ -223,32 +286,55 @@ namespace PROG6221POE
             Controls.Add(btnSend);
         }
 
+        // ======================================================
+        // START BUTTON EVENT
+        // ======================================================
+
         private void BtnStart_Click(object? sender, EventArgs e)
         {
             string name = txtName!.Text.Trim();
 
-            // Prevents placeholder text from becoming the username
-            if (string.IsNullOrWhiteSpace(name) || name == "Enter your name...")
+            if (string.IsNullOrWhiteSpace(name)
+                || name == "Enter your name...")
             {
                 name = "Friend";
             }
 
+            // Create chatbot
             bot = new ChatbotEngine(name);
 
+            // Clear previous chat
             rtbChat!.Clear();
 
+            // Startup messages
             AddBotMessage(bot.GetAsciiArt());
 
-            AddBotMessage("Session initialized successfully.");
+            AddBotMessage("SYSTEM ONLINE");
 
             AddBotMessage("Welcome, " + name + ".");
 
-            AddBotMessage("Ask about phishing, passwords, scams, privacy, or safe browsing.");
+            AddBotMessage(
+                "Cybersecurity assistant initialized successfully.");
 
-            AddBotMessage("Try: 'I am worried about scams' or 'tell me more'.");
+            AddBotMessage(
+                "Topics available:\n" +
+                "- Phishing\n" +
+                "- Passwords\n" +
+                "- Scams\n" +
+                "- Privacy\n" +
+                "- Safe Browsing\n" +
+                "- 2FA");
 
+            AddBotMessage(
+                "Examples:\n" +
+                "'I am worried about scams'\n" +
+                "'Tell me more about phishing'\n" +
+                "'How do I create a strong password?'");
+
+            // Voice greeting
             AudioPlayer.PlayGreeting("Audio.wav");
 
+            // Enable controls
             txtInput!.Enabled = true;
 
             btnSend!.Enabled = true;
@@ -256,14 +342,23 @@ namespace PROG6221POE
             txtInput.Focus();
         }
 
+        // ======================================================
+        // SEND BUTTON EVENT
+        // ======================================================
+
         private void BtnSend_Click(object? sender, EventArgs e)
         {
             ProcessUserInput();
         }
 
-        private void TxtInput_KeyDown(object? sender, KeyEventArgs e)
+        // ======================================================
+        // ENTER KEY EVENT
+        // ======================================================
+
+        private void TxtInput_KeyDown(
+            object? sender,
+            KeyEventArgs e)
         {
-            // Allows Enter key to send messages
             if (e.KeyCode == Keys.Enter)
             {
                 ProcessUserInput();
@@ -272,18 +367,26 @@ namespace PROG6221POE
             }
         }
 
+        // ======================================================
+        // INPUT PROCESSING
+        // ======================================================
+
         private void ProcessUserInput()
         {
             if (bot == null)
             {
-                MessageBox.Show("Start the assistant first.");
+                MessageBox.Show(
+                    "Start the chatbot first.",
+                    "System",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 return;
             }
 
             string userInput = txtInput!.Text.Trim();
 
-            // Prevents empty submissions
+            // Prevent empty submissions
             if (string.IsNullOrWhiteSpace(userInput))
             {
                 AddBotMessage("Input required.");
@@ -291,39 +394,65 @@ namespace PROG6221POE
                 return;
             }
 
+            // Show user message
             AddUserMessage(userInput);
 
+            // Generate response
             string response = bot.GetResponse(userInput);
 
+            // Show bot response
             AddBotMessage(response);
 
+            // Clear input
             txtInput.Clear();
 
             txtInput.Focus();
         }
 
+        // ======================================================
+        // USER MESSAGE DISPLAY
+        // ======================================================
+
         private void AddUserMessage(string message)
         {
-            rtbChat!.SelectionColor = Color.FromArgb(255, 160, 160);
+            string timestamp =
+                DateTime.Now.ToString("HH:mm:ss");
 
-            rtbChat.AppendText("USER > "
-                               + message
-                               + Environment.NewLine
-                               + Environment.NewLine);
+            rtbChat!.SelectionColor =
+                Color.FromArgb(255, 160, 160);
 
-            rtbChat.SelectionColor = Color.FromArgb(255, 210, 210);
+            rtbChat.AppendText(
+                "[" + timestamp + "] USER > "
+                + message
+                + Environment.NewLine
+                + Environment.NewLine);
+
+            rtbChat.SelectionColor =
+                Color.FromArgb(255, 210, 210);
+
+            rtbChat.ScrollToCaret();
         }
+
+        // ======================================================
+        // BOT MESSAGE DISPLAY
+        // ======================================================
 
         private void AddBotMessage(string message)
         {
-            rtbChat!.SelectionColor = Color.FromArgb(255, 210, 210);
+            string timestamp =
+                DateTime.Now.ToString("HH:mm:ss");
 
-            rtbChat.AppendText("BOT > "
-                               + message
-                               + Environment.NewLine
-                               + Environment.NewLine);
+            rtbChat!.SelectionColor =
+                Color.FromArgb(255, 210, 210);
 
-            rtbChat.SelectionColor = Color.FromArgb(255, 210, 210);
+            rtbChat.AppendText(
+                "[" + timestamp + "] BOT > "
+                + message
+                + Environment.NewLine
+                + Environment.NewLine);
+
+            rtbChat.SelectionColor =
+                Color.FromArgb(255, 210, 210);
 
             rtbChat.ScrollToCaret();
         }
