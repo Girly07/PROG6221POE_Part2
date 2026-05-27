@@ -1,0 +1,19 @@
+﻿namespace PROG6221POE
+{
+    public static class AsciiArt
+    {
+        public static string GetArt()
+        {
+            return @"
+         CYBER BOT 
+
+         .-""""-.
+        / -   -  \
+       |  o   o  |
+       |    ^    |
+        \  ---  /
+         '-___-'
+";
+        }
+    }
+}
