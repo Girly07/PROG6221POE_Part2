@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace PROG6221POE
 {
     /*
-     * AUDIO PLAYER - Handles voice greeting playback.
+     AUDIO PLAYER - Handles voice greeting playback.
      */
 
     public static class AudioPlayer
