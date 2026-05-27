@@ -5,28 +5,38 @@ using System.Windows.Forms;
 
 namespace PROG6221POE
 {
+    /*
+     * AUDIO PLAYER - Handles voice greeting playback.
+     */
+
     public static class AudioPlayer
     {
         public static void PlayGreeting(string filePath)
         {
-            // Makes sure the audio file exists first
             if (!File.Exists(filePath))
             {
-                MessageBox.Show("Audio file missing: " + filePath);
+                MessageBox.Show(
+                    "Audio file missing:\n" + filePath,
+                    "Audio Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
                 return;
             }
 
             try
             {
-                // Loads and plays the greeting
                 SoundPlayer player = new SoundPlayer(filePath);
 
                 player.Play();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Audio playback failed: " + ex.Message);
+                MessageBox.Show(
+                    "Audio playback failed:\n" + ex.Message,
+                    "Playback Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }
