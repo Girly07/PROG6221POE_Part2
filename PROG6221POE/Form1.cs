@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace PROG6221POE
@@ -332,7 +333,9 @@ namespace PROG6221POE
                 "'How do I create a strong password?'");
 
             // Voice greeting
-            AudioPlayer.PlayGreeting("Audio.wav");
+            string audioPath = Path.Combine(Application.StartupPath,"Audio.wav");
+
+            AudioPlayer.PlayGreeting(audioPath);
 
             // Enable controls
             txtInput!.Enabled = true;
