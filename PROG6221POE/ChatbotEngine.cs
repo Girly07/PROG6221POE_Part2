@@ -41,7 +41,6 @@ namespace PROG6221POE
 
         // Activity Log
         private List<ActivityLogEntry> activityLog = new List<ActivityLogEntry>();
-        private int logDisplayCount = 0;
 
         // ======================================================
         // DATABASES
@@ -59,6 +58,7 @@ namespace PROG6221POE
         public ChatbotEngine(string userName)
         {
             this.userName = string.IsNullOrWhiteSpace(userName) ? "Friend" : userName;
+
             dbHelper = new DatabaseHelper();
             quiz = new Quiz();
 
@@ -119,16 +119,12 @@ namespace PROG6221POE
             // Check for task-related commands
             if (input.Contains("add task") || input.Contains("new task"))
             {
-                // Extract task description
                 string taskText = input.Replace("add task", "").Replace("new task", "").Trim();
 
-                // Check for reminder request
                 if (input.Contains("remind me") || input.Contains("reminder"))
                 {
-                    // Try to extract reminder date
-                    DateTime reminderDate = DateTime.Now.AddDays(3); // Default 3 days
+                    DateTime reminderDate = DateTime.Now.AddDays(3);
 
-                    // Simple date parsing
                     if (input.Contains("tomorrow"))
                         reminderDate = DateTime.Now.AddDays(1);
                     else if (input.Contains("7 days"))
@@ -159,8 +155,6 @@ namespace PROG6221POE
 
             if (input.Contains("complete task") || input.Contains("mark complete"))
             {
-                // Try to extract task ID
-                var tasks = dbHelper.GetAllTasks();
                 int taskId = -1;
                 int.TryParse(input.Replace("complete task", "").Replace("mark complete", "").Trim(), out taskId);
 
@@ -250,7 +244,6 @@ namespace PROG6221POE
             }
 
             sb.AppendLine("\nCommands: complete task [id] | delete task [id]");
-
             return sb.ToString();
         }
 
@@ -290,14 +283,6 @@ namespace PROG6221POE
             if (activityLog.Count > 10)
             {
                 sb.AppendLine($"\nShowing last 10 of {activityLog.Count} entries.");
-                sb.AppendLine("Type 'show full log' to view all entries.");
-            }
-
-            // Check for full log request
-            if (activityLog.Count > 10)
-            {
-                // Store current count for "show more" functionality
-                logDisplayCount = activityLog.Count;
             }
 
             return sb.ToString();
@@ -667,6 +652,10 @@ namespace PROG6221POE
             return userName;
         }
     }
+
+    // ======================================================
+    // ACTIVITY LOG ENTRY CLASS
+    // ======================================================
 
     public class ActivityLogEntry
     {
