@@ -12,7 +12,7 @@ namespace PROG6221POE
         public DatabaseHelper()
         {
             // Update this with your MySQL connection details
-            connectionString = "Server=localhost;Database=cyberbot_db;Uid=root;Pwd=yourpassword;";
+            connectionString = "Server=localhost;Database=cyberbot_db;Uid=root;Pwd=Girly@070322;";
 
             // Create table if it doesn't exist
             CreateTableIfNotExists();
