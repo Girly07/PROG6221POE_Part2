@@ -212,7 +212,7 @@ namespace PROG6221POE
         }
 
         // ======================================================
-        // START BUTTON EVENT
+        // START BUTTON EVENT - UPDATED WITH ALL FEATURES
         // ======================================================
 
         private void BtnStart_Click(object? sender, EventArgs e)
@@ -228,6 +228,8 @@ namespace PROG6221POE
             AddBotMessage("SYSTEM ONLINE");
             AddBotMessage("Welcome, " + name + ".");
             AddBotMessage("Cybersecurity assistant initialized successfully.");
+
+            // Updated welcome messages with all Part 3 features
             AddBotMessage("Topics available:\n- Phishing\n- Passwords\n- Scams\n- Privacy\n- Safe Browsing\n- 2FA");
             AddBotMessage("Task Management:\n- Add task [description]\n- View tasks\n- Complete task [id]\n- Delete task [id]");
             AddBotMessage("Quiz:\n- Start quiz - Test your cybersecurity knowledge!");
