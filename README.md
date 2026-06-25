@@ -134,9 +134,4 @@ CyberSecurity Awareness Chatbot Project
 
 ================================ CONCLUSION ====================================
 
-CYBER BOT combines intelligent conversations, cybersecurity education, database-driven task management, reminders, an interactive quiz, NLP
-simulation and activity logging into a professional Windows Forms
-application demonstrating modern C# software development skills. 
-database-driven task management, reminders, an interactive quiz, NLP
-simulation anvity logging into a professional Windows Forms
-application demonstrating modern C# software development skills.
+CYBER BOT combines intelligent conversations, cybersecurity education, database-driven task management, reminders, an interactive quiz, NLP simulation anvity logging into a professional Windows Forms application demonstrating modern C# software development skills.
