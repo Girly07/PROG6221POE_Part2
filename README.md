@@ -1,462 +1,142 @@
-# PROG6221 POE — CYBER BOT
-Cybersecurity Awareness Chatbot in C# Windows Forms
+PROG6221 POE - CYBER BOT Cybersecurity Awareness Chatbot in C# Windows
+Forms
 
----
+================================ PROJECT OVERVIEW ==========================================
 
-# Project Overview
+CYBER BOT is a Windows Forms cybersecurity awareness chatbot developed
+in C# using .NET 8.
 
-CYBER BOT is a Windows Forms cybersecurity awareness chatbot developed in C#.  
-The application is designed to educate users about online safety through interactive conversations, intelligent responses, sentiment detection, memory features, ASCII art, and voice greetings.
+The application educates users about online safety through intelligent
+conversations, sentiment detection, memory features, cybersecurity task
+management, reminders, an interactive quiz, Natural Language Processing
+(NLP) simulation, MySQL database integration, activity logging, ASCII
+art and voice greetings.
 
-The chatbot provides information about:
-- Phishing
-- Password safety
-- Online scams
-- Privacy
-- Safe browsing
-- Two-factor authentication (2FA)
+============================= FEATURES ======================================
 
-The project focuses on creating a professional, engaging, and user-friendly cybersecurity assistant.
+PART 1 - Cybersecurity chatbot - Keyword recognition - Educational
+responses - ASCII art - Voice greeting
 
----
+PART 2 - Dynamic random responses - Sentiment detection - Memory
+system - Follow-up conversations - Improved Windows Forms GUI - Input
+validation
 
-# Project Description
+PART 3 - Cybersecurity Task Assistant - MySQL database integration -
+CRUD operations (Add, View, Complete, Delete) - Reminder system -
+Interactive cybersecurity quiz (10+ questions) - Score tracking -
+Immediate feedback and explanations - Natural Language Processing (NLP)
+simulation - Activity Log - Professional multi-feature Windows Forms
+interface
 
-This project is a cybersecurity awareness chatbot built using C# and Windows Forms.  
-The chatbot interacts with users and teaches important cybersecurity concepts through intelligent conversations and dynamic responses.
+====================================== TASK ASSISTANT =========================================
 
-The chatbot recognises cybersecurity-related keywords and responds with useful educational information about online threats and digital safety practices.
+Users can: - Add cybersecurity tasks - Store title and description - Add
+optional reminder dates - View all tasks - Mark tasks as completed -
+Delete tasks
 
-The project demonstrates:
-- Object-Oriented Programming (OOP)
-- Event-driven programming
-- User interaction handling
-- Sentiment detection
-- Memory recall systems
-- Dynamic chatbot conversations
+Tasks are stored permanently in a MySQL database.
 
----
+====================================== MYSQL DATABASE =======================================
 
-# Features
+Database: CyberBotDB
 
-## Intelligent Chatbot Responses
-The chatbot recognises cybersecurity-related keywords and responds naturally with a wide range of dynamic responses.
+Stores: - Task ID - Title - Description - Reminder Date - Completion
+Status
 
-### Supported Topics
-- Phishing
-- Password security
-- Online scams
-- Privacy
-- Safe browsing
-- 2FA / MFA
-- General cybersecurity awareness
+Supports: - Create - Read - Update - Delete
 
----
+====================================== CYBERSECURITY QUIZ ==========================================
 
-## Random Dynamic Responses
-The chatbot uses collections of multiple responses for each topic to avoid repetitive conversations.
+The application contains more than 10 cybersecurity questions
+covering: - Password Safety - Phishing - Safe Browsing - Online Scams -
+Privacy - Social Engineering - Two-Factor Authentication
 
-This creates:
-- More natural conversations
-- Better user engagement
-- Improved realism
-- Smooth conversational flow
+Each question provides immediate feedback and an explanation. The userâs
+score is displayed at the end together with performance feedback.
 
----
+===================================== NLP SIMULATION =========================================
 
-## Smart Keyword Recognition
-The chatbot detects important cybersecurity keywords and provides relevant responses automatically.
+The chatbot recognises multiple ways of asking for the same action.
 
-Example keywords:
-- phishing
-- password
-- scam
-- privacy
-- browser
-- 2FA
-- suspicious email
+Examples: - Add a task - Create a task - Remind me toâ¦ - Start quiz -
+Show activity log - What have you done for me?
 
----
+==================================== ACTIVITY LOG ========================================
 
-## Sentiment Detection
-The chatbot detects user emotions and adjusts responses dynamically.
+The chatbot records important actions such as: - Tasks added - Tasks
+completed - Tasks deleted - Reminder creation - Quiz started - Quiz
+completed - NLP commands recognised
 
-### Supported moods
-- Worried
-- Frustrated
-- Curious
-- Confused
-- Nervous
-- Angry
-- Excited
-- Overwhelmed
-- Happy
+Recent actions can be viewed using: Show activity log or What have you
+done for me?
 
-Example:
+================================ TECHNOLOGIES ==================================
 
-```text
-User: I am worried about scams
+-   C#
+-   .NET 8 Windows Forms
+-   MySQL
+-   MySQL Connector
+-   Object-Oriented Programming
+-   Lists
+-   Dictionaries
+-   Event Driven Programming
 
-Bot:
-I understand your concern. Online threats can definitely feel stressful.
-```
+=============================== PROJECT STRUCTURE ====================================
 
----
+PROG6221POE | Audio | greeting.wav | |Models | |â CyberTask.cs |
+|â QuizQuestion.cs | |â Services | |â DatabaseManager.cs | |â
+ActivityLogger.cs | |â QuizManager.cs | |â AsciiArt.cs |â AudioPlayer.cs
+|â ChatbotEngine.cs |â Form1.cs |â Program.cs |â README.txt
 
-## Memory System
-The chatbot remembers:
-- User name
-- Favourite cybersecurity topic
-- Recent mood
+============================ HOW TO RUN ==========================================
 
-Example:
+1.  Open the solution in Visual Studio.
+2.  Ensure .NET 8 Desktop Development is installed.
+3.  Install MySQL Server.
+4.  Create the CyberBotDB database.
+5.  Configure the MySQL connection string.
+6.  Build the solution.
+7.  Press F5.
 
-```text
-User: My name is Alex
+============================== LEARNING OUTCOMES ===================================
 
-Bot:
-Nice to meet you, Alex. I will remember your name.
-```
+This project demonstrates: - Object-Oriented Programming - Windows Forms
+development - MySQL database integration - CRUD operations - GUI
+development - Basic NLP simulation - Event handling - Cybersecurity
+awareness education
 
-This improves conversational realism and engagement.
+=============================== FUTURE IMPROVEMENTS ================================
 
----
+-   AI integration
+-   Voice recognition
+-   Email reminders
+-   Cloud database
+-   User accounts
+-   Dashboard analytics
+-   Chat history export
+-   Dark/Light themes
 
-## Follow-Up Conversations
-The chatbot supports conversational continuation.
+========================== REFERENCES ================================
 
-Example:
+OpenAI. (2026) ChatGPT (GPT-5.5). Available at: https://chatgpt.com/ (Accessed: 25 June 2026).
 
-```text
-tell me more
-another tip
-continue
-go deeper
-```
+DeepSeek AI. (2025) DeepSeek Chat. Available at: https://chat.deepseek.com/ (Accessed: 25 June 2026).  [oai_citation:0‡DeepSeek](https://www.deepseek.com/chat?utm_source=chatgpt.com)
 
-This improves conversational flow and realism.
-
----
-
-## Menu-Driven User Interaction
-The project uses interactive controls and event handling to create a smooth chatbot experience.
-
-Features include:
-- Send button
-- Text input field
-- Interactive chat display
-- Keyboard Enter support
-
----
-
-## User Input Handling
-The chatbot validates user input and prevents:
-- Empty messages
-- Invalid submissions
-- Crashes caused by missing information
-
----
-
-## ASCII Art
-The chatbot displays cybersecurity-themed ASCII art at startup for improved presentation.
-
-Example:
-
-```text
-CYBER BOT
-
-.-""""-.
-/ -   -  \
-|  o   o  |
-|    ^    |
-\  ---  /
-'-___-'
-```
-
----
-
-## Voice Greeting
-The application plays a WAV audio greeting when the chatbot starts.
-
-Example:
-
-```text
-Welcome to Cyber Bot. Your cybersecurity assistant is now online.
-```
-
----
-
-## Professional User Interface
-The Windows Forms interface includes:
-- Custom colour theme
-- Styled buttons
-- Rich text chat display
-- Input validation
-- Professional layout
-- Smooth user interaction
-- Professional cybersecurity appearance
-
----
-
-# Technologies Used
-
-- C#
-- .NET Windows Forms
-- Visual Studio
-- Object-Oriented Programming (OOP)
-- Dictionaries and Lists
-- Event-Driven Programming
-
----
-
-# Object-Oriented Programming Concepts Used
-
-## Encapsulation
-Classes manage their own data and behaviour.
-
----
-
-## Abstraction
-Complex chatbot processes are simplified through methods.
-
----
-
-## Modularity
-The project is separated into multiple focused classes.
-
----
-
-## Reusability
-Methods and collections are reused throughout the application.
-
----
-
-# Project Structure
-
-```text
-PROG6221POE
-│
-├── Audio
-│   └── greeting.wav
-│
-├── AsciiArt.cs
-├── AudioPlayer.cs
-├── ChatbotEngine.cs
-├── Form1.cs
-├── Program.cs
-└── README.md
-```
-
----
-
-# File Descriptions
-
-## Program.cs
-Application entry point.
-
-Responsible for:
-- Starting the Windows Forms application
-- Launching Form1
-
----
-
-## Form1.cs
-Main graphical interface.
-
-Responsible for:
-- Chat display
-- User input
-- Buttons
-- Interface styling
-- Event handling
-
----
-
-## ChatbotEngine.cs
-Core chatbot logic.
-
-Responsible for:
-- Topic detection
-- Random responses
-- Memory system
-- Sentiment analysis
-- Follow-up handling
-- Conversational flow
-
----
-
-## AudioPlayer.cs
-Handles WAV audio playback.
-
-Responsible for:
-- Loading greeting audio
-- Error handling
-- Playing startup greeting
-
----
-
-## AsciiArt.cs
-Stores and returns chatbot ASCII art.
-
----
-
-# How To Run The Project
-
-## Requirements
-- Visual Studio 2022 or newer
-- .NET Windows Forms support
-- Windows OS
-
----
-
-## Steps
-
-### 1. Open the Project
-Open the solution in Visual Studio.
-
----
-
-### 2. Add Audio File
-Create an `Audio` folder inside the project.
-
-Add:
-
-```text
-greeting.wav
-```
-
-Set properties:
-
-| Property | Value |
-|---|---|
-| Build Action | Content |
-| Copy to Output Directory | Copy if newer |
-
----
-
-### 3. Build the Project
-
-Select:
-
-```text
-Build → Build Solution
-```
-
----
-
-### 4. Run the Application
-
-Press:
-
-```text
-F5
-```
-
-or click:
-
-```text
-Start
-```
-
----
-
-# Example User Inputs
-
-```text
-What is phishing?
-```
-
-```text
-How do I create a strong password?
-```
-
-```text
-I am worried about scams
-```
-
-```text
-Tell me more
-```
-
-```text
-What do you remember about me?
-```
-
----
-
-# Topics Covered
-
-- Password Safety
-- Phishing Attacks
-- Safe Browsing
-- Online Scams
-- Privacy Protection
-- Two-Factor Authentication (2FA)
-- General Cybersecurity Awareness
-
----
-
-# Error Handling
-
-The project includes:
-- Empty input validation
-- Audio file existence checks
-- Exception handling for audio playback
-- Safe response handling
-
----
-
-# Educational Purpose
-
-The chatbot was designed to:
-- Promote cybersecurity awareness
-- Educate users about online threats
-- Encourage safer online behaviour
-- Demonstrate practical C# programming skills
-
----
-
-# Future Improvements
-
-Possible future upgrades:
-- AI/NLP integration
-- Database storage
-- User accounts
-- Voice recognition
-- Animated UI
-- Online threat API integration
-- Chat history export
-- Dark/light themes
-
----
-
-# References
-
-OpenAI. (2026) ChatGPT (GPT-5.3). Available at: https://chat.openai.com/ (Accessed: 14 April 2026).
-
----
-
-# Author
+========================== AUTHOR ================================
 
 Mashilo Mamane Girly
 
 Developed for:
 PROG6221 Practical Assessment (POE)
 
-Cybersecurity Awareness Chatbot Project
+CyberSecurity Awareness Chatbot Project
 
----
 
-# Conclusion
+================================ CONCLUSION ====================================
 
-CYBER BOT demonstrates:
-- Strong object-oriented programming
-- Professional Windows Forms development
-- Dynamic conversational logic
-- Sentiment-aware interaction
-- User memory systems
-- Cybersecurity education principles
-- Smart keyword recognition
-- Professional user interface design
-
-The project provides an engaging and educational cybersecurity assistant experience while showcasing practical software development skills in C#.
+CYBER BOT combines intelligent conversations, cybersecurity education, database-driven task management, reminders, an interactive quiz, NLP
+simulation and activity logging into a professional Windows Forms
+application demonstrating modern C# software development skills. 
+database-driven task management, reminders, an interactive quiz, NLP
+simulation anvity logging into a professional Windows Forms
+application demonstrating modern C# software development skills.
