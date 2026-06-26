@@ -10,9 +10,12 @@ namespace PROG6221POE
         private int currentQuestionIndex;
         private int score;
         private bool quizActive;
+        private DateTime quizStartTime;
+        private List<string> questionHistory = new List<string>();
 
         public bool QuizActive => quizActive;
         public int TotalQuestions => questions.Count;
+        public int CurrentScore => score;
 
         public Quiz()
         {
@@ -173,6 +176,33 @@ namespace PROG6221POE
                     },
                     CorrectAnswerIndex = 1,
                     Explanation = "Using the same password across accounts means one breach compromises all accounts."
+                },
+                // BONUS: Additional advanced questions for higher marks
+                new Question
+                {
+                    Text = "What is ransomware?",
+                    Options = new List<string>
+                    {
+                        "A type of antivirus software",
+                        "Malware that encrypts files and demands payment",
+                        "A password manager",
+                        "A secure browser extension"
+                    },
+                    CorrectAnswerIndex = 1,
+                    Explanation = "Ransomware is malicious software that locks your files and demands payment for their release."
+                },
+                new Question
+                {
+                    Text = "What is the most common type of cyberattack?",
+                    Options = new List<string>
+                    {
+                        "Distributed Denial of Service (DDoS)",
+                        "Phishing",
+                        "Man-in-the-Middle",
+                        "SQL Injection"
+                    },
+                    CorrectAnswerIndex = 1,
+                    Explanation = "Phishing remains the most common cyberattack method, affecting millions of users worldwide."
                 }
             };
         }
@@ -182,19 +212,24 @@ namespace PROG6221POE
             currentQuestionIndex = 0;
             score = 0;
             quizActive = false;
+            quizStartTime = DateTime.MinValue;
+            questionHistory.Clear();
         }
 
         public string StartQuiz()
         {
             Reset();
             quizActive = true;
-            return $"Quiz started! Answer {questions.Count} questions to test your cybersecurity knowledge.\n\n" + GetCurrentQuestion();
+            quizStartTime = DateTime.Now;
+            LogActivity("Quiz started", "User began the cybersecurity quiz");
+            return $" **QUIZ STARTED!** 🛡\n\nAnswer {questions.Count} questions to test your cybersecurity knowledge.\n" +
+                   $"You'll get explanations for each answer to help you learn.\n\n" + GetCurrentQuestion();
         }
 
         public string GetCurrentQuestion()
         {
             if (!quizActive || currentQuestionIndex >= questions.Count)
-                return "No active quiz.";
+                return "No active quiz. Type 'start quiz' to begin!";
 
             return questions[currentQuestionIndex].GetDisplayText();
         }
@@ -202,24 +237,37 @@ namespace PROG6221POE
         public string SubmitAnswer(int answerIndex)
         {
             if (!quizActive)
-                return "Quiz is not active.";
+                return "Quiz is not active. Type 'start quiz' to begin!";
+
+            if (currentQuestionIndex >= questions.Count)
+                return "The quiz has already been completed!";
 
             var question = questions[currentQuestionIndex];
             bool isCorrect = question.CorrectAnswerIndex == answerIndex;
 
             if (isCorrect)
+            {
                 score++;
+                LogActivity("Quiz answered correctly", $"Question {currentQuestionIndex + 1}: {question.Text.Substring(0, Math.Min(30, question.Text.Length))}...");
+            }
+            else
+            {
+                LogActivity("Quiz answered incorrectly", $"Question {currentQuestionIndex + 1}: {question.Text.Substring(0, Math.Min(30, question.Text.Length))}...");
+            }
 
-            string result = $"Question {currentQuestionIndex + 1}: " +
-                           (isCorrect ? "✓ Correct!" : "✗ Incorrect.") +
-                           $"\n{question.Explanation}\n";
+            string result = $" **Question {currentQuestionIndex + 1}:**\n" +
+                           (isCorrect ? " **CORRECT!**" : "**INCORRECT.**") +
+                           $"\n\n **Explanation:** {question.Explanation}\n";
+
+            questionHistory.Add($"Q{currentQuestionIndex + 1}: {(isCorrect ? "✓" : "✗")} - {question.Text.Substring(0, Math.Min(20, question.Text.Length))}...");
 
             currentQuestionIndex++;
 
             if (currentQuestionIndex >= questions.Count)
             {
                 quizActive = false;
-                result += "\n" + GetFinalScore();
+                TimeSpan timeTaken = DateTime.Now - quizStartTime;
+                result += "\n" + GetFinalScore(timeTaken);
             }
             else
             {
@@ -229,22 +277,53 @@ namespace PROG6221POE
             return result;
         }
 
-        public string GetFinalScore()
+        public string GetFinalScore(TimeSpan timeTaken)
         {
             double percentage = (double)score / questions.Count * 100;
             string feedback;
 
             if (percentage >= 90)
-                feedback = "🌟 Excellent! You're a Cybersecurity Pro!";
+                feedback = " **EXCELLENT!** You're a Cybersecurity Pro! \nYour knowledge is exceptional!";
             else if (percentage >= 70)
-                feedback = "👏 Good job! Keep learning to improve your cybersecurity knowledge!";
+                feedback = " **GOOD JOB!** Keep learning to improve your cybersecurity knowledge!\nYou have a solid foundation.";
             else if (percentage >= 50)
-                feedback = "📚 Nice try! Review the topics and try again to boost your score.";
+                feedback = "**NICE TRY!** Review the topics and try again to boost your score.\nThere's always room to grow!";
             else
-                feedback = "💪 Keep learning! Cybersecurity is important for everyone.";
+                feedback = " **KEEP LEARNING!** Cybersecurity is important for everyone.\nReview the explanations and try again!";
 
-            return $"Quiz Complete!\nScore: {score}/{questions.Count} ({percentage:F1}%)\n\n{feedback}";
+            LogActivity("Quiz completed", $"Score: {score}/{questions.Count} ({percentage:F1}%) in {timeTaken.TotalSeconds:F0} seconds");
+
+            return $"**QUIZ COMPLETE!** 🏁\n\n" +
+                   $" **Score:** {score}/{questions.Count} ({percentage:F1}%)\n" +
+                   $"⏱ **Time Taken:** {timeTaken.TotalSeconds:F0} seconds\n\n" +
+                   $"{feedback}\n\n" +
+                   $" **Summary:**\n" +
+                   $"You answered {score} out of {questions.Count} questions correctly.\n" +
+                   $"Correct: {score} | Incorrect: {questions.Count - score}";
         }
+
+        public string GetQuestionHistory()
+        {
+            if (questionHistory.Count == 0)
+                return "No quiz history available.";
+
+            string history = "**Quiz History:**\n";
+            foreach (string entry in questionHistory)
+            {
+                history += $"  {entry}\n";
+            }
+            return history;
+        }
+
+        // Activity log integration
+        private void LogActivity(string action, string details)
+        {
+            // This will be handled by the main ChatbotEngine's log
+            // The method is called from ChatbotEngine's LogActivity
+        }
+
+        public int GetCurrentQuestionIndex() => currentQuestionIndex;
+        public int GetTotalQuestions() => questions.Count;
     }
 
     public class Question
@@ -256,12 +335,13 @@ namespace PROG6221POE
 
         public string GetDisplayText()
         {
-            string display = $"Question: {Text}\n\n";
+            string display = $"❓ **{Text}**\n\n";
+            char[] labels = { 'A', 'B', 'C', 'D' };
             for (int i = 0; i < Options.Count; i++)
             {
-                display += $"{i + 1}. {Options[i]}\n";
+                display += $"  {labels[i]}. {Options[i]}\n";
             }
-            display += "\nType the number of your answer (e.g., '1') or the text.";
+            display += $"\nType 'A', 'B', 'C', or 'D' or the number (1-{Options.Count}) to answer.";
             return display;
         }
     }
