@@ -2,20 +2,35 @@
 using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace PROG6221POE
 {
     public class DatabaseHelper
     {
         private string connectionString;
+        private bool isConnected = false;
 
         public DatabaseHelper()
         {
-            // Update this with your MySQL connection details
+            // Connection string - update with your details
             connectionString = "Server=localhost;Database=cyberbot_db;Uid=root;Pwd=Girly@070322;";
 
-            // Create table if it doesn't exist
-            CreateTableIfNotExists();
+            try
+            {
+                CreateTableIfNotExists();
+                isConnected = true;
+            }
+            catch (Exception ex)
+            {
+                // Show error but don't crash - allow app to work without DB
+                MessageBox.Show(
+                    $"Database connection failed: {ex.Message}\n\nTasks will not be saved to database, but other features will work.",
+                    "Database Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                isConnected = false;
+            }
         }
 
         private void CreateTableIfNotExists()
@@ -42,83 +57,139 @@ namespace PROG6221POE
 
         public void AddTask(string title, string description, DateTime? reminderDate)
         {
-            string query = @"
-                INSERT INTO tasks (title, description, reminder_date) 
-                VALUES (@title, @description, @reminderDate)";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            if (!isConnected)
             {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                MessageBox.Show("Database not connected. Task will be stored in memory only.",
+                    "Database Offline", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                string query = @"
+                    INSERT INTO tasks (title, description, reminder_date) 
+                    VALUES (@title, @description, @reminderDate)";
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    cmd.Parameters.AddWithValue("@title", title);
-                    cmd.Parameters.AddWithValue("@description", description);
-                    cmd.Parameters.AddWithValue("@reminderDate",
-                        reminderDate.HasValue ? (object)reminderDate.Value : DBNull.Value);
-                    cmd.ExecuteNonQuery();
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@title", title ?? "Untitled Task");
+                        cmd.Parameters.AddWithValue("@description", description ?? "");
+                        cmd.Parameters.AddWithValue("@reminderDate",
+                            reminderDate.HasValue ? (object)reminderDate.Value : DBNull.Value);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to add task: {ex.Message}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         public List<Task> GetAllTasks()
         {
             List<Task> tasks = new List<Task>();
-            string query = "SELECT * FROM tasks ORDER BY created_at DESC";
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            if (!isConnected)
+                return tasks; // Return empty list
+
+            try
             {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                string query = "SELECT * FROM tasks ORDER BY is_completed ASC, created_at DESC";
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        tasks.Add(new Task
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32("id"),
-                            Title = reader.GetString("title"),
-                            Description = reader.IsDBNull(reader.GetOrdinal("description"))
-                                ? "" : reader.GetString("description"),
-                            ReminderDate = reader.IsDBNull(reader.GetOrdinal("reminder_date"))
-                                ? (DateTime?)null : reader.GetDateTime("reminder_date"),
-                            IsCompleted = reader.GetBoolean("is_completed"),
-                            CreatedAt = reader.GetDateTime("created_at")
-                        });
+                            tasks.Add(new Task
+                            {
+                                Id = reader.GetInt32("id"),
+                                Title = reader.GetString("title"),
+                                Description = reader.IsDBNull(reader.GetOrdinal("description"))
+                                    ? "" : reader.GetString("description"),
+                                ReminderDate = reader.IsDBNull(reader.GetOrdinal("reminder_date"))
+                                    ? (DateTime?)null : reader.GetDateTime("reminder_date"),
+                                IsCompleted = reader.GetBoolean("is_completed"),
+                                CreatedAt = reader.GetDateTime("created_at")
+                            });
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to retrieve tasks: {ex.Message}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             return tasks;
         }
 
-        public void DeleteTask(int id)
+        public bool DeleteTask(int id)
         {
-            string query = "DELETE FROM tasks WHERE id = @id";
+            if (!isConnected)
+                return false;
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                string query = "DELETE FROM tasks WHERE id = @id";
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to delete task: {ex.Message}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
-        public void MarkTaskAsCompleted(int id)
+        public bool MarkTaskAsCompleted(int id)
         {
-            string query = "UPDATE tasks SET is_completed = TRUE WHERE id = @id";
+            if (!isConnected)
+                return false;
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                string query = "UPDATE tasks SET is_completed = TRUE WHERE id = @id";
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to complete task: {ex.Message}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
+
+        public bool IsConnected() => isConnected;
     }
 
     public class Task
@@ -132,11 +203,12 @@ namespace PROG6221POE
 
         public override string ToString()
         {
-            string status = IsCompleted ? "[✓]" : "[ ]";
+            string status = IsCompleted ? "✅" : "⬜";
             string reminder = ReminderDate.HasValue
-                ? $" (Reminder: {ReminderDate.Value.ToString("yyyy-MM-dd HH:mm")})"
+                ? $"📅 {ReminderDate.Value.ToString("yyyy-MM-dd HH:mm")}"
                 : "";
-            return $"{status} {Title}{reminder}";
+            string titleDisplay = IsCompleted ? $"~~{Title}~~" : Title;
+            return $"{status} #{Id} {titleDisplay} {reminder}".Trim();
         }
     }
 }
